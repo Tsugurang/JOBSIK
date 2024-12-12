@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팝업 예제</title>
+    <link rel="stylesheet" href="Storage.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- 상단 메뉴바 -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <!-- GIF 로고 클릭 시 링크로 이동 -->
+            <a href="index.html" class="link">
+                <img class="logo-gif" src="logo.gif" alt="잡식 로고">
+            </a>
+        </div>
+        <div class="navbar-right">
+            <a href="about.html" class="link">About</a>
+            <a href="game.html" class="link">Clover</a>
+            <a href="Storage.html" class="link">Storage</a>
+        </div>
+    </div>
+    <main>
+        <div class="grid-container">
+            <!-- 각 원에 이미지 추가 -->
+            <div class="circle link" data-image="images/마요네즈/page.png" style="background-image: url('images/마요네즈/마요네즈 썸네일.png');"></div>
+            <div class="circle link" data-image="images/마요네즈/마요네즈 세부.png" style="background-image: url('images/마요네즈/마요네즈 썸네일.png');"></div>
+            <div class="circle link" data-image="images/마요네즈/마요네즈 세부.png" style="background-image: url('images/마요네즈/마요네즈 썸네일.png');"></div>
+            <div class="circle link" data-image="images/마요네즈/마요네즈 세부.png" style="background-image: url('images/마요네즈/마요네즈 썸네일.png');"></div>
+            <div class="circle link" data-image="images/마요네즈/마요네즈 세부.png" style="background-image: url('images/마요네즈/마요네즈 썸네일.png');"></div>
+            <div class="circle link" data-image="images/마요네즈/마요네즈 세부.png" style="background-image: url('images/마요네즈/마요네즈 썸네일.png');"></div>
+            <div class="circle link" data-image="image2.jpg" style="background-image: url('thumb2.jpg');"></div>
+            <div class="circle link" data-image="image3.jpg" style="background-image: url('thumb3.jpg');"></div>
+            <div class="circle link" data-image="image4.jpg" style="background-image: url('thumb4.jpg');"></div>
+        </div>
+    </main>
+
+
+    <!-- 팝업 컨테이너 -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <img src="" alt="팝업 이미지" id="popup-img">
+        </div>
+    </div>
+    <!-- 비동기로 JavaScript 로드 -->
+    <script src="mouse.js?ver=1" async></script>
+    <div class="cursor"></div>
+    <script>
+        // 커서 제거 코드
+        document.body.style.cursor = 'none';
+    </script>
+    <script>
+// JavaScript 코드 (script.js)
+
+const popup = document.getElementById('popup');
+const popupImg = document.getElementById('popup-img');
+
+// 원(circle) 클릭 이벤트
+document.querySelectorAll('.circle').forEach(circle => {
+    circle.addEventListener('click', () => {
+        const imageSrc = circle.getAttribute('data-image');
+        const popupImg = document.createElement('img'); // 이미지 태그를 동적으로 생성
+        popupImg.src = imageSrc;
+        popupImg.alt = "팝업 이미지";
+        popupImg.style.maxWidth = "100%";
+        popupImg.style.height = "auto";
+
+        const popupContent = document.querySelector('.popup-content');
+        popupContent.innerHTML = ''; // 기존 이미지를 제거
+        popupContent.appendChild(popupImg); // 새 이미지를 추가
+
+        popup.style.display = 'flex'; // 팝업 표시
+    });
+});
+
+// 팝업 외부 클릭 이벤트
+popup.addEventListener('click', (e) => {
+    if (e.target === popup) {
+        popup.style.display = 'none';
+    }
+});
+</script>
+<link rel="preload" as="image" href="images/마요네즈/마요네즈 세부.png">
+</body>
+</html>

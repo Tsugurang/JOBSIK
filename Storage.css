@@ -1,0 +1,191 @@
+/* 기본 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none;
+}
+
+html, body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100%; /* HTML과 Body에 전체 높이 적용 */
+    overflow: hidden; /* 기본적으로 스크롤바 숨김 */
+    cursor: none;
+}
+
+main {
+    padding-top: 150px; /* 네비게이션 바 높이만큼 패딩 */
+    overflow-y: auto; /* 세로 스크롤 허용 */
+    scroll-behavior: smooth; /* 부드러운 스크롤 */
+    height: calc(100vh); /* 네비게이션 바 높이를 제외한 높이 */
+}
+
+main::-webkit-scrollbar {
+    display: none; /* Chrome, Safari 등에서 스크롤바 숨기기 */
+}
+
+/* 네비게이션 바 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: black; /* 배경색 추가 */
+    z-index: 1000;
+}
+
+.navbar-left .logo-gif {
+    width: 80px; /* GIF 로고 너비 */
+    height: auto;
+    display: block;
+}
+
+.navbar-right a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+/* 메인 컨텐츠 */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 기본 3열 */
+    gap: 100px;
+    justify-items: center;
+    align-items: center;
+    padding: 20px; /* 화면 끝 여백 */
+    cursor: none;
+}
+
+/* 기본 원 스타일 */
+.circle {
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: none;
+}
+
+/* 반응형 디자인 - 태블릿 환경 */
+@media (max-width: 1024px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 2열 레이아웃 */
+        gap: 80px;
+    }
+
+    .circle {
+        width: 200px;
+        height: 200px;
+        
+    }
+}
+
+/* 반응형 디자인 - 모바일 환경 */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 모바일에서는 2열 */
+        gap: 50px;
+    }
+
+    .circle {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* 더 작은 화면 - 초소형 모바일 */
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column; /* 네비게이션 세로 배치 */
+        align-items: flex-start;
+        padding: 10px 15px;
+        height: auto; /* 높이 자동 조정 */
+    }
+
+    .navbar-left a {
+        font-size: 16px;
+    }
+
+    .navbar-right a {
+        font-size: 12px;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(1, 1fr); /* 초소형 화면에서는 1열 */
+        gap: 30px;
+    }
+
+    .circle {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* 커서 */
+.cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
+
+.cursor.cursor_expand {
+    transform: scale(1.5);
+    cursor: none;
+}
+
+/* 팝업 스타일 */
+.popup {
+    display: none; /* 초기에는 보이지 않음 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8); /* 어두운 배경 */
+    z-index: 2000;
+    justify-content: center;
+    align-items: flex-start; /* 컨텐츠를 화면 상단에 맞춤 */
+    overflow: auto; /* 스크롤 가능 */
+    padding-top: 10%; /* 화면 상단에서 30% 아래로 이동 */
+}
+
+.popup-content {
+    position: relative;
+    display: inline-block;
+    max-width: 70%; /* 팝업 컨테이너의 너비 제한 */
+    max-height: 70%; /* 팝업 컨테이너의 높이 제한 */
+}
+
+.popup-content img {
+    width: 100%; /* 컨테이너의 너비와 동일 */
+    height: auto; /* 비율에 맞게 높이 조정 */
+    display: block;
+}
+
+
+.circle {
+    width: 300px;
+    height: 300px;
+    background-size: cover; /* 배경 이미지 크기 조정 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    border-radius: 50%;
+    cursor: none;
+}

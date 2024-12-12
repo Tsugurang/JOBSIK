@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="game.css">
+  <title>Optimized Clover Game with Div Blur</title>
+
+</head>
+<body>
+    <!-- 상단 메뉴바 -->
+    <div class="navbar">
+      <div class="navbar-left">
+          <!-- GIF 로고 클릭 시 링크로 이동 -->
+          <a href="index.html" class="link">
+              <img class="logo-gif" src="logo.gif" alt="잡식 로고">
+          </a>
+      </div>
+      <div class="navbar-right">
+          <a href="about.html" class="link">About</a>
+          <a href="game.html" class="link">Clover</a>
+          <a href="Storage.html" class="link">Storage</a>
+      </div>
+  </div>
+
+  <div id="game-area">
+    <div id="blur-layer"></div>
+  </div>
+  <div id="center-image" class="center-image link"></div>
+  
+  <script src="game.js"></script>
+  <script>
+      document.body.style.cursor = 'none';
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+/* 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; 
+}
+
+html, body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow: auto; /* 스크롤 활성화 */
+    -ms-overflow-style: none; /* IE, Edge 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox 스크롤바 숨기기 */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari 스크롤바 숨기기 */
+}
+
+/* 네비게이션 바 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: black; /* 배경색 추가 */
+    z-index: 1000;
+}
+
+.navbar-left .logo-gif {
+    width: 80px; /* GIF 로고 너비 */
+    height: auto;
+    display: block;
+}
+
+.navbar-right a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+/* 메인 이미지 페이지 */
+.main-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #000000;
+    min-height: calc(100vh - 60px);
+    margin-top: 60px;
+}
+
+.main-image-container img {
+    width: 70%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* 커서 */
+.cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
+
+.cursor.cursor_expand {
+    transform: scale(1.5);
+    cursor: none;
+}
+
+/* 검정 원 축소 애니메이션 */
+.expand-circle {
+    position: fixed;
+    top: 50%;  /* 중앙 정렬 */
+    left: 50%;
+    background-color: black;
+    border-radius: 50%; /* 원 모양 유지 */
+    z-index: 2000; /* 화면 최상위에 표시 */
+    transform: translate(-50%, -50%) scale(1.5); /* 화면을 넘치게 커버 */
+    visibility: visible; /* 페이지 로드 시 보임 */
+    transition: transform 1s ease-out; /* 부드러운 축소 효과 */
+    width: 100vmax; /* 화면 가장 큰 길이 기준 */
+    height: 100vmax;
+    animation: shrinkCircle 1s ease-out forwards; /* 애니메이션 정의 */
+}
+
+@keyframes shrinkCircle {
+    0% {
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0); /* 화면 중앙으로 작아짐 */
+    }
+}

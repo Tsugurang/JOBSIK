@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>잡식</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.17.1/matter.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="maincss.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+
+    <style>
+        /* 검정 원 확대 애니메이션 */
+        .expand-circle {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: black;
+            border-radius: 50%;
+            transform: scale(0);
+            z-index: 2000;
+            visibility: hidden;
+            transition: transform 1s ease-out;
+        }
+    </style>
+</head>
+
+<body>   
+    <!-- 상단 메뉴바 -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <!-- GIF 로고 클릭 시 링크로 이동 -->
+            <a href="index.html" class="link">
+                <img class="logo-gif" src="logo.gif" alt="잡식 로고">
+            </a>
+        </div>
+        <div class="navbar-right">
+            <a href="about.html" class="link">About</a>
+            <a href="game.html" class="link">Clover</a>
+            <a href="Storage.html" class="link">Storage</a>
+        </div>
+    </div>
+
+    <div class="expand-circle"></div> <!-- 검정 원 -->
+    <div class="content">
+        <script>
+            const { Engine, Render, Runner, World, Bodies, Events, Body } = Matter;
+
+            const margin = 50;
+            let width = window.innerWidth - margin * 2;
+            let height = window.innerHeight - margin - 60;
+
+            const engine = Engine.create();
+            const { world } = engine;
+
+            engine.world.gravity.y = 0.8;
+
+            const render = Render.create({
+                element: document.body,
+                engine: engine,
+                options: {
+                    width: window.innerWidth,
+                    height: window.innerHeight - 60,
+                    wireframes: false,
+                    background: 'black'
+                }
+            });
+
+            Render.run(render);
+            Runner.run(Runner.create(), engine);
+
+            const circles = [];
+            const images = [
+                "images/마요네즈/마요네즈 영상.mp4",
+                "images/비행기/비행기 영상.mp4",
+                "images/송편/송편 썸네일.mp4",
+                "images/영화/영화 영상.mp4",
+                "images/우유/우유 썸네일.mp4",
+                "images/페트병 꽃/페트병 꽃 썸네일.png",
+                "images/쿠킹호일/쿠킹호일 영상.mp4",
+                "images/도넛/도넛.mp4",
+                "images/거울/거울 영상.mp4",
+                "images/감튀/감튀 영상.mp4",
+
+            ];
+
+            const links = [
+                "마요네즈.html",
+                "비행기.html",
+                "송편.html",
+                "영화.html",
+                "우유.html",
+                "페트병 꽃.html",
+                "쿠킹호일.html"
+            ];
+
+            const loadedImages = {};
+            images.forEach(src => {
+                const img = new Image();
+                img.src = src;
+                loadedImages[src] = img;
+            });
+
+            // 4가지 고정 크기
+            const sizeOptions = [50, 70, 100, 150];
+            let largeCircleCount = 3; // 제일 큰 원의 개수를 제한
+
+            for (let i = 0; i < 15; i++) {
+                let radius;
+
+                // 제일 큰 원은 최대 3~4개만 생성
+                if (largeCircleCount < 4 && Math.random() < 0.2) {
+                    radius = 150;
+                    largeCircleCount++;
+                } else {
+                    // 나머지는 3가지 크기 중 랜덤 선택
+                    const otherSizes = sizeOptions.slice(0, 3); // [50, 70, 100]
+                    radius = otherSizes[Math.floor(Math.random() * otherSizes.length)];
+                }
+
+                const x = Math.random() * (width - 2 * radius) + radius + margin;
+                const y = Math.random() * (height / 2 - 2 * radius) + radius;
+
+                const circle = Bodies.circle(x, y, radius, {
+                    render: { fillStyle: '#FFFFFF' },
+                    restitution: 0,
+                    frictionAir: 0.1,
+                    friction: 300,
+                    inertia: Infinity,
+                    mass: 20
+                });
+
+                circle.initialRadius = radius;
+                circle.currentRadius = radius;
+                circle.image = images[i % images.length];
+                circle.hasImage = false;
+                circle.link = links[i % links.length]; // 링크 설정
+                circle.isExpanded = false; // 클릭 상태 확인
+                circles.push(circle);
+                World.add(world, circle);
+            }
+
+            const bottomWall = Bodies.rectangle(
+                window.innerWidth / 2, window.innerHeight, window.innerWidth, 10, {
+                    isStatic: true,
+                    render: { visible: false }
+                });
+            World.add(world, bottomWall);
+
+            render.canvas.addEventListener('mousedown', function(event) {
+    const mousePosition = {
+        x: event.clientX,
+        y: event.clientY
+    };
+    let clickedCircle = null;
+
+    circles.forEach(circle => {
+        const dx = mousePosition.x - circle.position.x;
+        const dy = mousePosition.y - circle.position.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // 클릭 위치가 원의 반지름 이내인지 확인
+        if (distance <= circle.currentRadius) {
+            clickedCircle = circle;
+        }
+    });
+
+    if (clickedCircle) {
+        if (clickedCircle.isExpanded) {
+            // 이미지 클릭 시 검정 원 확대 및 링크 이동
+            triggerExpandAnimation(clickedCircle, event.clientX, event.clientY);
+        } else {
+            // 원 클릭 시 확대
+            const maxRadius = Math.min(width, height) / 3;
+            const scaleFactor = maxRadius / clickedCircle.currentRadius;
+
+            // 클릭한 원을 확대하고, 다른 원들은 초기 크기로 복원
+            circles.forEach(circle => {
+                if (circle === clickedCircle) {
+                    Body.scale(circle, scaleFactor, scaleFactor);
+                    circle.currentRadius = maxRadius;
+                    circle.hasImage = true;
+                    circle.isExpanded = true;
+                } else {
+                    const resetScale = circle.initialRadius / circle.currentRadius;
+                    Body.scale(circle, resetScale, resetScale);
+                    circle.currentRadius = circle.initialRadius;
+                    circle.hasImage = false;
+                    circle.isExpanded = false;
+                }
+            });
+        }
+    }
+});
+
+
+            function triggerExpandAnimation(circle, clickX, clickY) {
+                const expandCircle = document.querySelector(".expand-circle");
+                const maxSize = Math.max(window.innerWidth, window.innerHeight) * 2;
+
+                // 검정 원 초기 설정
+                expandCircle.style.width = `${circle.currentRadius * 2}px`;
+                expandCircle.style.height = `${circle.currentRadius * 2}px`;
+                expandCircle.style.left = `${clickX - circle.currentRadius}px`;
+                expandCircle.style.top = `${clickY - circle.currentRadius}px`;
+                expandCircle.style.visibility = "visible";
+
+                // 확대 애니메이션 실행
+                expandCircle.style.transform = `scale(${maxSize / (circle.currentRadius * 2)})`;
+
+                // 페이지 전환 (1초 후 실행)
+                setTimeout(() => {
+                    window.location.href = circle.link;
+                }, 1000);
+            }
+
+            function drawCircleDetails() {
+                const ctx = render.context;
+                circles.forEach((circle, index) => {
+                    ctx.font = '20px Arial';
+                    ctx.fillStyle = '#000000';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(index + 1, circle.position.x, circle.position.y);
+
+                    if (circle.hasImage) {
+                        const img = loadedImages[circle.image];
+                        if (img) {
+                            const scaleFactor = (circle.currentRadius * 2) / img.width;
+                            const x = circle.position.x - circle.currentRadius;
+                            const y = circle.position.y - circle.currentRadius;
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.arc(circle.position.x, circle.position.y, circle.currentRadius, 0, Math.PI * 2);
+                            ctx.closePath();
+                            ctx.clip();
+                            ctx.drawImage(img, x, y, img.width * scaleFactor, img.height * scaleFactor);
+                            ctx.restore();
+                        }
+                    }
+                });
+            }
+
+            Events.on(engine, 'beforeUpdate', () => {
+                drawCircleDetails();
+                circles.forEach(circle => {
+                    if (circle.position.x - circle.currentRadius < margin) {
+                        Body.setPosition(circle, { x: margin + circle.currentRadius, y: circle.position.y });
+                        Body.setVelocity(circle, { x: Math.abs(circle.velocity.x) * 0.2, y: circle.velocity.y });
+                    } else if (circle.position.x + circle.currentRadius > width + margin) {
+                        Body.setPosition(circle, { x: width + margin - circle.currentRadius, y: circle.position.y });
+                        Body.setVelocity(circle, { x: -Math.abs(circle.velocity.x) * 0.2, y: circle.velocity.y });
+                    }
+
+                    if (circle.position.y - circle.currentRadius < 0) {
+                        Body.setPosition(circle, { x: circle.position.x, y: circle.currentRadius });
+                        Body.setVelocity(circle, { x: circle.velocity.x, y: Math.abs(circle.velocity.y) * 0.2 });
+                    } else if (circle.position.y + circle.currentRadius > height) {
+                        Body.setPosition(circle, { x: circle.position.x, y: height - circle.currentRadius });
+                        Body.setVelocity(circle, { x: circle.velocity.x, y: -Math.abs(circle.velocity.y) * 0.2 });
+                    }
+                });
+            });
+
+// 화면 크기 조정 시 원 크기 업데이트
+window.addEventListener('resize', () => {
+    width = window.innerWidth - margin * 2;
+    height = window.innerHeight - margin - 60;
+
+    render.options.width = window.innerWidth;
+    render.options.height = window.innerHeight - 60;
+    render.canvas.width = window.innerWidth;
+    render.canvas.height = window.innerHeight - 60;
+
+    Body.setPosition(bottomWall, { x: window.innerWidth / 2, y: window.innerHeight });
+
+    resizeCircles(); // 원 크기 조정 호출
+});
+        </script>
+    </div>
+    <script src="mouse.js?ver= 1"></script>
+    <div class="cursor"></div>
+    <script>
+        document.body.style.cursor = 'none';
+    </script>
+    <script>
+        const loadedMedia = {};
+        images.forEach(src => {
+            if (src.endsWith(".mp4")) {
+                const video = document.createElement("video");
+                video.src = src;
+                video.loop = true;
+                video.muted = true;
+                video.play();
+                loadedMedia[src] = video;
+            } else {
+                const img = new Image();
+                img.src = src;
+                loadedMedia[src] = img;
+            }
+        });
+    
+        function drawCircleDetails() {
+            const ctx = render.context;
+            circles.forEach((circle, index) => {
+                ctx.font = '20px Arial';
+                ctx.fillStyle = '#000000';
+                ctx.textAlign = 'center';
+                ctx.fillText(index + 1, circle.position.x, circle.position.y);
+    
+                const media = loadedMedia[circle.image];
+                if (circle.hasImage && media) {
+                    const scaleFactor = (circle.currentRadius * 2) / media.width;
+                    const x = circle.position.x - circle.currentRadius;
+                    const y = circle.position.y - circle.currentRadius;
+                    
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(circle.position.x, circle.position.y, circle.currentRadius, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.clip();
+    
+                    if (media instanceof HTMLVideoElement) {
+                        ctx.drawImage(media, x, y, circle.currentRadius * 2, circle.currentRadius * 2);
+                    } else if (media instanceof HTMLImageElement) {
+                        ctx.drawImage(media, x, y, media.width * scaleFactor, media.height * scaleFactor);
+                    }
+    
+                    ctx.restore();
+                }
+            });
+        }
+    </script>
+    <script>
+    // .link 요소에 마우스 오버 시 isMouseOverLink 업데이트
+        $link.mouseenter(function() {
+            isMouseOverLink = true;
+            updateCursor();
+        }).mouseleave(function() {
+            isMouseOverLink = false;
+            updateCursor();
+        });
+    </script>
+    <script>
+        // 원 크기 및 위치 업데이트 함수
+function resizeCircles() {
+    const scaleFactorWidth = (window.innerWidth - margin * 2) / width;
+    const scaleFactorHeight = (window.innerHeight - margin - 60) / height;
+
+    circles.forEach(circle => {
+        // 크기 조정
+        const newRadius = circle.initialRadius * Math.min(scaleFactorWidth, scaleFactorHeight);
+        const scale = newRadius / circle.currentRadius;
+        Body.scale(circle, scale, scale);
+        circle.currentRadius = newRadius;
+
+        // 위치 조정
+        const newX = circle.position.x * scaleFactorWidth;
+        const newY = circle.position.y * scaleFactorHeight;
+        Body.setPosition(circle, { x: newX, y: newY });
+    });
+
+    width = window.innerWidth - margin * 2;
+    height = window.innerHeight - margin - 60;
+}
+
+// 화면 크기 조정 시 처리
+window.addEventListener('resize', () => {
+    width = window.innerWidth - margin * 2;
+    height = window.innerHeight - margin - 60;
+
+    render.options.width = window.innerWidth;
+    render.options.height = window.innerHeight - 60;
+    render.canvas.width = window.innerWidth;
+    render.canvas.height = window.innerHeight - 60;
+
+    Body.setPosition(bottomWall, { x: window.innerWidth / 2, y: window.innerHeight });
+
+    resizeCircles(); // 원 크기 및 위치 조정 호출
+});
+
+    </script>
+</body>
+</html>
