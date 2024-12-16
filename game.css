@@ -152,6 +152,7 @@ font-size: 18px;
   opacity: 0;
   animation: fadeIn 2s ease forwards, sway 2s ease-in-out infinite; /* 애니메이션 유지 */
   cursor: none;
+  display: none;
 }
 
 .center-image.no-animation {

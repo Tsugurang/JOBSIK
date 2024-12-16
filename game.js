@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(cursor);
 
   const cloverSize = 70; // 클로버 크기
-  const threeLeafCount = 50; // 세잎클로버 개수 감소
+  const threeLeafCount = 400; // 세잎클로버 개수 감소
   const movementDistance = 50; // 주변 클로버 이동 거리
   const cloverData = [
       { image: "images/four-leaf.png"},
