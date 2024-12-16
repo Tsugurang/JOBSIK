@@ -12,11 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const threeLeafCount = 50; // 세잎클로버 개수 감소
   const movementDistance = 50; // 주변 클로버 이동 거리
   const cloverData = [
-      { image: "images/four-leaf.png", link: "마요네즈.html" },
-      { image: "images/four-leaf.png", link: "비행기.html" },
-      { image: "images/four-leaf.png", link: "송편.html" },
-      { image: "images/four-leaf.png", link: "영화.html" },
-      { image: "images/four-leaf.png", link: "우유.html" },
+      { image: "images/four-leaf.png"},
+      { image: "images/four-leaf.png"},
+      { image: "images/four-leaf.png"},
+      { image: "images/four-leaf.png"},
+      { image: "images/four-leaf.png"},
   ];
 
   // 커서 위치 추적
@@ -126,54 +126,60 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const blurLayer = document.getElementById("blur-layer");
   const centerImage = document.getElementById("center-image");
+  const cloverData = [
+    { image: "images/네잎/감자튀김 띠지.png", link: "감자튀김.html" },
+    { image: "images/네잎/개미집 띠지.png", link: "개미집.html" },
+    { image: "images/네잎/돼지 띠지.png", link: "돼지저금통.html" },
+    { image: "images/네잎/라면 띠지.png", link: "라면.html" },
+    { image: "images/네잎/마요네즈 띠지.png", link: "마요네즈.html" },
+    { image: "images/네잎/송편 띠지.png", link: "송편.html" },
+    { image: "images/네잎/에스컬레이터 띠지.png", link: "에스컬레이터.html" },
+    { image: "images/네잎/영화 띠지.png", link: "영화.html" },
+    { image: "images/네잎/우유 띠지.png", link: "우유.html" },
+    { image: "images/네잎/유리 띠지.png", link: "거울.html" },
+    { image: "images/네잎/자갈 띠지.png", link: "자갈.html" },
+    { image: "images/네잎/창문 띠지.png", link: "비행기.html" },
+    { image: "images/네잎/쿠킹호일 띠지.png", link: "쿠킹호일.html" },
+    { image: "images/네잎/튜브 띠지.png", link: "튜브.html" },
+    { image: "images/네잎/페트병 꽃 띠지.png", link: "페트병 꽃.html" },
+  ];
+
+  function getRandomImageData() {
+    const randomIndex = Math.floor(Math.random() * cloverData.length);
+    return cloverData[randomIndex];
+  }
 
   document.querySelectorAll(".clover").forEach((clover) => {
     clover.addEventListener("click", () => {
       if (clover.style.backgroundImage.includes("four-leaf")) {
-        // 배경 블러 활성화
+        // 블러 활성화 및 네잎클로버 중앙 표시
         blurLayer.style.display = "block";
+        centerImage.style.backgroundImage = `url('images/four-leaf.png')`;
+        centerImage.style.opacity = "1";
+        centerImage.classList.remove("no-animation"); // 네잎클로버에는 애니메이션 적용
 
-        // 랜덤 데이터 선택
-        const randomData = getRandomImageData();
-        centerImage.style.backgroundImage = `url('${randomData.image}')`;
+        // 3초 후 랜덤 이미지로 변경 (애니메이션 없이)
+        setTimeout(() => {
+          const randomData = getRandomImageData();
+          centerImage.style.backgroundImage = `url('${randomData.image}')`;
 
-        // 첫 등장: 페이드인 애니메이션
-        centerImage.style.opacity = "1"; // 보이도록 설정
-        centerImage.style.animation = "fadeIn 1.5s ease forwards"; // 첫 등장 애니메이션
+          // 랜덤 이미지 크기 키우기
+          centerImage.style.width = "500px";  // 크기 조정
+          centerImage.style.height = "500px"; // 크기 조정
 
-        // 첫 등장 애니메이션이 끝난 후 살랑거림 애니메이션 시작
-        centerImage.addEventListener("animationend", (e) => {
-          if (e.animationName === "fadeIn") {
-            centerImage.style.animation = "sway 2s ease-in-out infinite"; // 살랑거림 애니메이션
-          }
-        });
+          // 랜덤 이미지에는 애니메이션 제거
+          centerImage.classList.add("no-animation");
 
-        // 이미지 클릭 시 해당 링크로 이동
-        centerImage.addEventListener("click", () => {
-          window.location.href = randomData.link; // 이미지에 맞는 링크로 이동
-        });
+          // 클릭 시 링크로 이동 설정
+          centerImage.onclick = () => {
+            window.location.href = randomData.link;
+          };
+        }, 3000);  // 3초 후 랜덤 이미지 변경
       }
     });
   });
 });
 
-const imageData = [
-  { image: "images/four-leaf.png", link: "마요네즈.html" },
-  { image: "images/four-leaf.png", link: "비행기.html" },
-  { image: "images/four-leaf.png", link: "송편.html" },
-  { image: "images/four-leaf.png", link: "영화.html" },
-  { image: "images/four-leaf.png", link: "우유.html" },
-  { image: "images/four-leaf.png", link: "페트병 꽃.html" },
-  { image: "images/four-leaf.png", link: "link7.html" },
-  { image: "images/four-leaf.png", link: "link8.html" },
-  { image: "images/four-leaf.png", link: "link9.html" },
-  { image: "images/four-leaf.png", link: "link10.html" },
-  { image: "images/four-leaf.png", link: "link11.html" },
-  { image: "images/four-leaf.png", link: "link12.html" },
-  { image: "images/four-leaf.png", link: "link13.html" },
-  { image: "images/four-leaf.png", link: "link14.html" },
-  { image: "images/four-leaf.png", link: "link15.html" },
-];
 
 
 function getRandomImageData() {

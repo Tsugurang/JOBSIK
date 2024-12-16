@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개미집</title>
+    <link rel="stylesheet" href="page.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <!-- Preload 이미지 -->
+    <link rel="preload" href="pages/1.png" as="image">
+</head>
+<body>
+    <script src="page.js"></script>
+    
+    <!-- 상단 메뉴바 -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <!-- GIF 로고 클릭 시 링크로 이동 -->
+            <a href="index.html" class="link">
+                <img class="logo-gif" src="logo.gif" alt="잡식 로고">
+            </a>
+        </div>
+        <div class="navbar-right">
+            <a href="about.html" class="link">About</a>
+            <a href="game.html" class="link">Clover</a>
+            <a href="Storage.html" class="link">Storage</a>
+        </div>
+    </div>
+
+    <div class="expand-circle"></div> <!-- 검정 원 -->
+
+    <!-- 메인 이미지 -->
+    <div class="main-image-container">
+        <!-- Lazy loading 적용 -->
+        <img src="images/개미집/개미집 세부 최종.png" alt="Large Image" loading="lazy">
+    </div>
+
+    <!-- 비동기로 JavaScript 로드 -->
+    <script src="mouse.js?ver=1" async></script>
+    <div class="cursor"></div>
+    <script>
+        // 커서 제거 코드
+        document.body.style.cursor = 'none';
+    </script>
+</body>
+</html>
