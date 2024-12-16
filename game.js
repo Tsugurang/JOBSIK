@@ -154,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (clover.style.backgroundImage.includes("four-leaf")) {
         // 블러 활성화 및 네잎클로버 중앙 표시
         blurLayer.style.display = "block";
+        centerImage.style.display = "block"; // centerImage 보이게 설정
         centerImage.style.backgroundImage = `url('images/four-leaf.png')`;
         centerImage.style.opacity = "1";
         centerImage.classList.remove("no-animation"); // 네잎클로버에는 애니메이션 적용
