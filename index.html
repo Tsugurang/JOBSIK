@@ -233,10 +233,6 @@
             function drawCircleDetails() {
                 const ctx = render.context;
                 circles.forEach((circle, index) => {
-                    ctx.font = '20px Arial';
-                    ctx.fillStyle = '#000000';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(index + 1, circle.position.x, circle.position.y);
 
                     if (circle.hasImage) {
                         const img = loadedImages[circle.image];
@@ -318,10 +314,6 @@ window.addEventListener('resize', () => {
         function drawCircleDetails() {
             const ctx = render.context;
             circles.forEach((circle, index) => {
-                ctx.font = '20px Arial';
-                ctx.fillStyle = '#000000';
-                ctx.textAlign = 'center';
-                ctx.fillText(index + 1, circle.position.x, circle.position.y);
     
                 const media = loadedMedia[circle.image];
                 if (circle.hasImage && media) {
